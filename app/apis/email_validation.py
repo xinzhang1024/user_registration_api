@@ -1,20 +1,17 @@
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from pydantic import constr
 
 from config import REGISTER_TAG
-from services.db_service import read_from_db
+from models.output import EmailValidationOutput
+from utils.check_auth import check_user_and_code
 
 EMAIL_VALIDATION_ROUTER = APIRouter()
 
 
-@EMAIL_VALIDATION_ROUTER.get('/email_validation/{code}', tags=[REGISTER_TAG])
-def email_validation(code: constr(regex='^\d{4}$')):
-
-    res = read_from_db(code)
-    status = 'OK' if res else 'KO'
-
+@EMAIL_VALIDATION_ROUTER.get('/email_validation/{code}', tags=[REGISTER_TAG], response_model=EmailValidationOutput)
+def email_validation(code: constr(regex='^\d{4}$'), db_code: str = Depends(check_user_and_code)):
     return {
-        'status': status,
-        'email_verified': res
+        'status': 'OK' if code == db_code else 'KO',
+        'email_verified': True if code == db_code else False
     }

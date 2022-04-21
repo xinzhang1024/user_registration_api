@@ -29,10 +29,11 @@
   
 - Openapi:
   ```sh
-    http://localhost/docs
+  http://localhost/docs
   ```
-  
-- Run unittest in app folder:
-  ```sh
-    ./run_tests.sh
-  ```
+
+- How to test
+  1. with path /register and method POST to register user,
+     enter email and password, a 4 digits code will be printed in console.
+  2. with path /email_validation/{code} and method GET to verify in 1 minute,
+     enter code, and email, password under basic auth.

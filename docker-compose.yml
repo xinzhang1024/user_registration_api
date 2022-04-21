@@ -10,3 +10,15 @@ services:
     env_file:
       - ${ENV}.env
     entrypoint: ./startup.sh
+    depends_on:
+      - db_mysql
+
+  db_mysql:
+    image: mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    env_file:
+      - ${ENV}.env
